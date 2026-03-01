@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hospital Patient Search</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/hospital.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Hospital Patient Search</h1>
+
+    <!-- Search Section -->
+    <div class="search-card">
+        <h3>Search Patient by Email</h3>
+
+        <form method="POST" class="search-form">
+            <input 
+                type="email" 
+                name="email" 
+                placeholder="Enter patient email address"
+                autocomplete="off"
+                required
+            >
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
+    <!-- Results Section -->
+    {% if results and results|length > 0 %}
+        {% for patient in results %}
+            <div class="result-card">
+                <p><span class="label">Name:</span> {{ patient.name }}</p>
+                <p><span class="label">Email:</span> {{ patient.email }}</p>
+                <p><span class="label">Patient ID:</span> {{ patient._id }}</p>
+            </div>
+
+           <div class="view-record-wrapper">
+    <a href="/hospital/patient/{{ patient._id }}" class="view-btn">
+        View Full Medical Record
+    </a>
+</div>
+
+        {% endfor %}
+    {% elif request.method == "POST" %}
+        <div class="result-card">
+            <p class="no-result">No patient found with this email.</p>
+        </div>
+    {% endif %}
+
+</div>
+
+</body>
+</html>

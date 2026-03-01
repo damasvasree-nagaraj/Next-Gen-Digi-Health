@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Appointments Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/hospital.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Appointments Dashboard</h1>
+
+    {% if appointments %}
+
+        <div class="appointments-grid">
+
+            {% for appt in appointments %}
+            <div class="appointment-card">
+
+                <div class="appt-header">
+                    <span class="token">Token #{{ appt.token_number }}</span>
+                    <span class="status {{ appt.status }}">
+                        {{ appt.status | capitalize }}
+                    </span>
+                </div>
+
+                <div class="appt-body">
+                    <p><span class="label">Patient:</span> {{ appt.patient_name }}</p>
+                    <p><span class="label">Doctor:</span> {{ appt.doctor_name }}</p>
+                    <p><span class="label">Date:</span> {{ appt.date }}</p>
+                    <p><span class="label">Time:</span> {{ appt.time }}</p>
+                </div>
+
+        {% if appt.status == "Confirmed" %}
+
+           <div class="button-group">
+    <form method="POST" action="/hospital/cancel-appointment/{{ appt._id }}">
+        <button type="submit" class="cancel-btn">Cancel</button>
+    </form>
+
+    <form method="POST" action="/hospital/reschedule/{{ appt._id }}">
+        <button type="submit" class="reschedule-btn">🔄Reschedule</button>
+    </form>
+</div>
+
+        {% endif %}
+
+             
+            </div>
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+        <p class="no-result">No appointments scheduled.</p>
+    {% endif %}
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Doctor Dashboard | Digi Health</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/doctor.css') }}">
+</head>
+
+<body class="doctor-page">
+
+<!-- TOP BAR -->
+<div class="doctor-topbar">
+    <h2 class="doctor-logo">Digi Health</h2>
+    <a href="/logout" class="doctor-logout-btn">Logout</a>
+</div>
+
+<div class="doctor-wrapper">
+
+    <h1 class="doctor-title">Doctor Dashboard</h1>
+
+    <div class="doctor-card-grid">
+
+        <a href="/doctor/prescribe" class="card">
+            <h2>Create Prescription</h2>
+            <p>Write and save new prescriptions</p>
+        </a>
+
+        <a href="/doctor/prescriptions" class="doctor-card">
+            <h3>View Prescriptions</h3>
+            <p>Access all patient prescriptions</p>
+        </a>
+
+        <a href="/doctor/claims" class="doctor-card">
+            <h3>Insurance Claims</h3>
+            <p>Review and manage claims</p>
+        </a>
+
+        <a href="/doctor-availability" class="doctor-card">
+            <h3>Manage Availability</h3>
+            <p>Set your working schedule</p>
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+</html>

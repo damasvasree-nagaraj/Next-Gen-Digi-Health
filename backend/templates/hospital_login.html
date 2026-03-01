@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hospital Admin Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/hospital.css') }}">
+</head>
+
+<body class="login-body">
+
+<div class="login-container">
+
+    <div class="login-card">
+        <h2>Hospital Admin Login</h2>
+
+        <form method="POST">
+
+            <div class="input-group">
+                <label>Email Address</label>
+                <input type="email" name="email" required>
+            </div>
+
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" name="password" required>
+            </div>
+
+            <button type="submit" class="login-btn">
+                Login
+            </button>
+
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>

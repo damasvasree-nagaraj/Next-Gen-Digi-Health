@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Doctor Availability | Digi-Health</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="appointment-page">
+
+<div class="appointment-container">
+
+    <div class="appointment-header">
+        <h1>Doctor Availability</h1>
+        <p>Set your weekly schedule & manage slots</p>
+    </div>
+
+    <div class="appointment-card">
+
+        <form method="POST">
+
+            <div class="form-group">
+                <label>Day of Week</label>
+                <select name="day" required>
+                    <option>Monday</option>
+                    <option>Tuesday</option>
+                    <option>Wednesday</option>
+                    <option>Thursday</option>
+                    <option>Friday</option>
+                    <option>Saturday</option>
+                    <option>Sunday</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Start Time</label>
+                <input type="time" name="start_time" required>
+            </div>
+
+            <div class="form-group">
+                <label>End Time</label>
+                <input type="time" name="end_time" required>
+            </div>
+
+            <div class="form-group">
+                <label>Slot Duration (Minutes)</label>
+                <select name="duration" required>
+                    <option value="15">15 Minutes</option>
+                    <option value="20">20 Minutes</option>
+                    <option value="30">30 Minutes</option>
+                    <option value="45">45 Minutes</option>
+                </select>
+            </div>
+
+            <button type="submit" class="confirm-btn">
+                Save Availability
+            </button>
+
+        </form>
+
+    </div>
+
+    <br><br>
+
+    <div class="appointment-card">
+
+        <h3>Your Current Schedule</h3>
+
+        {% for s in schedules %}
+            <p>
+                <strong>{{ s.day_of_week }}</strong> :
+                {{ s.start_time }} - {{ s.end_time }}
+                ({{ s.slot_duration }} mins)
+            </p>
+        {% endfor %}
+
+    </div>
+
+</div>
+
+</body>
+</html>

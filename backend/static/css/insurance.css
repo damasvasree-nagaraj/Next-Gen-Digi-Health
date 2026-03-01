@@ -1,0 +1,202 @@
+.insurance-body {
+  min-height: 100vh;
+  background: url("../images/background/insurance-bg.jpg") center/cover no-repeat fixed;
+}
+
+.page-center {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.glass-card {
+  width: 100%;
+  max-width: 600px;
+  padding: 40px;
+  border-radius: 24px;
+  background: rgba(255,255,255,0.18);
+  backdrop-filter: blur(20px);
+  color: #fff;
+}
+
+form label {
+  display: block;
+  margin-top: 14px;
+}
+
+form input {
+  width: 100%;
+  padding: 12px;
+  margin-top: 6px;
+  border-radius: 10px;
+  border: none;
+}
+
+form button {
+  margin-top: 20px;
+  padding: 14px;
+  width: 100%;
+  border-radius: 14px;
+  border: none;
+  background: #00bcd4;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.status-box {
+  margin-top: 30px;
+  padding: 20px;
+  background: rgba(0,0,0,0.3);
+  border-radius: 14px;
+}
+
+/* ===== INSURANCE GLASS CARD ===== */
+.insurance-card {
+  background: rgba(255, 255, 255, 0.22); /* transparent white */
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+
+  border-radius: 24px;
+  padding: 40px;
+  max-width: 720px;
+  margin: auto;
+
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.45);
+}
+
+/* Improve text readability */
+.insurance-card h1,
+.insurance-card h2,
+.insurance-card label,
+.insurance-card p {
+  color: #ffffff;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.35);
+}
+
+.insurance-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+/* ===== CLAIM STATUS ===== */
+
+.claim-status-section {
+  margin-top: 40px;
+  text-align: center;
+}
+
+/* STATUS BADGE */
+.status-badge {
+  display: inline-block;
+  padding: 8px 22px;
+  border-radius: 20px;
+  font-weight: 600;
+  margin-bottom: 28px;
+  transition: all 0.4s ease;
+}
+
+.status-badge.pending {
+  background: #ffb300;
+  color: #000;
+}
+
+.status-badge.verified {
+  background: #2196f3;
+  color: #fff;
+}
+
+.status-badge.approved {
+  background: #4caf50;
+  color: #fff;
+}
+
+.status-badge.rejected {
+  background: #f44336;
+  color: #fff;
+}
+
+/* ===== TIMELINE ===== */
+
+.timeline {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  margin-top: 20px;
+}
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  top: 14px;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.3);
+  z-index: 0;
+}
+
+.timeline-step {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  width: 33%;
+  opacity: 0.4;
+  transition: all 0.4s ease;
+}
+
+.timeline-step.active {
+  opacity: 1;
+}
+
+.timeline-step.completed {
+  opacity: 1;
+}
+
+.timeline-step .dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #ccc;
+  margin: auto;
+  transition: background 0.4s ease, transform 0.4s ease;
+}
+
+.timeline-step.active .dot {
+  background: #00e5ff;
+  transform: scale(1.2);
+}
+
+.timeline-step.completed .dot {
+  background: #4caf50;
+}
+
+.timeline-step p {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+button {
+    margin-top: 20px;
+    padding: 14px 28px;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
+    color: white;
+
+    box-shadow: 0 8px 25px rgba(0, 114, 255, 0.35);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(0, 114, 255, 0.45);
+}

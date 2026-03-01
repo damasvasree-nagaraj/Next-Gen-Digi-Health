@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Upload Prescription</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/pharmacy.css') }}">
+</head>
+
+<body class="pharmacy-page">
+
+<div class="page-center">
+  <div class="glass-card">
+
+    <h1>Upload Prescription</h1>
+    <p class="subtitle">
+      Optional – Required for restricted medicines
+    </p>
+
+    <!-- Upload Section -->
+    <form method="POST" enctype="multipart/form-data">
+      <div class="upload-box">
+        <input type="file" name="prescription_file" accept="image/*,.pdf" required>
+      </div>
+
+      <button type="submit" class="primary-btn">
+        Upload & Continue 📄
+      </button>
+    </form>
+
+    <hr class="divider">
+
+    <!-- Existing Prescriptions -->
+    <h2>Select From My Prescriptions</h2>
+
+    {% if prescriptions %}
+      <div class="prescription-grid">
+        {% for p in prescriptions %}
+          <div class="prescription-card">
+
+            <p><strong>Doctor:</strong> {{ p.doctor_name }}</p>
+            <p><strong>Date:</strong> {{ p.date }}</p>
+            <p><strong>Diagnosis:</strong> {{ p.diagnosis }}</p>
+
+            <div class="card-actions">
+              <a href="/download-prescription/{{ p._id }}" class="secondary-btn">
+                Download PDF
+              </a>
+
+              <a href="/checkout" class="primary-btn small-btn">
+                Use This
+              </a>
+            </div>
+
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty-state">
+        <p>No prescriptions available.</p>
+      </div>
+    {% endif %}
+
+  </div>
+</div>
+
+</body>
+</html>

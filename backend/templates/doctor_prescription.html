@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Doctor Prescriptions</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/doctor_panel.css') }}">
+</head>
+
+<body class="doctor-panel-page">
+
+<div class="panel-container">
+
+    <h1>My Prescriptions</h1>
+
+    <div class="glass-card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Patient</th>
+                    <th>Diagnosis</th>
+                    <th>Medicines</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for p in prescriptions %}
+                <tr>
+                    <td>{{ p.patient_name }}</td>
+                    <td>{{ p.diagnosis }}</td>
+                    <td>{{ p.medicines }}</td>
+                    <td>{{ p.date }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <a href="/doctor" class="back-btn">Back to Dashboard</a>
+
+</div>
+
+</body>
+</html>

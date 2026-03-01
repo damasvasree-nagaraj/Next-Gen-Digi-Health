@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Insurance Claim</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/insurance.css') }}">
+</head>
+
+<body class="insurance-body">
+
+<div class="page-center">
+  <div class="glass-card">
+
+    <button class="back-btn" onclick="window.history.back()">⬅ Back</button>
+
+    <h1>Insurance Claim Submission</h1>
+    <p class="subtitle">Upload documents and track claim status</p>
+
+    <form id="claimForm" enctype="multipart/form-data">
+
+      <label>Policy Number</label>
+      <input type="text" required>
+
+      <label>Hospital Name</label>
+      <input type="text" required>
+
+      <label>Claim Amount (₹)</label>
+      <input type="number" required>
+
+      <label>Upload Medical Bills</label>
+      <input type="file" multiple required>
+
+      <button type="submit">Submit Claim</button>
+    </form>
+<!-- ===== CLAIM STATUS SECTION ===== -->
+<div class="claim-status-section">
+
+  <h2>Claim Progress</h2>
+
+  <!-- STATUS BADGE -->
+  <div id="statusBadge" class="status-badge pending">
+    Pending
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="timeline">
+
+    <div class="timeline-step active" id="step-submitted">
+      <span class="dot"></span>
+      <p>Submitted</p>
+    </div>
+
+    <div class="timeline-step" id="step-verified">
+      <span class="dot"></span>
+      <p>Verified</p>
+    </div>
+
+    <div class="timeline-step" id="step-approved">
+      <span class="dot"></span>
+      <p>Approved</p>
+    </div>
+
+  </div>
+
+</div>
+
+    <div class="status-box">
+      <h3>Claim Status</h3>
+      <p id="claimStatus">Not Submitted</p>
+    </div>
+
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/insurance.js') }}"></script>
+</body>
+</html>

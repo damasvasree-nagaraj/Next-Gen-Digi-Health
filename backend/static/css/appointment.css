@@ -1,0 +1,158 @@
+/* ===============================
+   GLOBAL PAGE BACKGROUND
+================================= */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: linear-gradient(135deg, #0f9b8e, #1f6fb2);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ===============================
+   TITLE SECTION
+================================= */
+.page-wrapper {
+    width: 100%;
+    max-width: 900px;
+    text-align: center;
+}
+
+.page-title {
+    color: #ffffff;
+    font-size: 42px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.page-subtitle {
+    color: #e6f2ff;
+    font-size: 16px;
+    margin-bottom: 40px;
+}
+
+/* ===============================
+   GLASS CARD
+================================= */
+.glass-card {
+    width: 420px;
+    margin: 0 auto;
+    padding: 40px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(18px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+/* ===============================
+   FORM GROUP
+================================= */
+.form-group {
+    margin-bottom: 25px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    color: #ffffff;
+    font-weight: 500;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+/* ===============================
+   INPUTS
+================================= */
+.form-group select,
+.form-group input {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    background: #f2f4f7;
+}
+
+/* ===============================
+   BUTTON
+================================= */
+.btn-primary {
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    border: none;
+    font-size: 16px;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    background: linear-gradient(90deg, #0ea5e9, #2563eb);
+    transition: 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+}
+
+/* ===============================
+   SUCCESS PAGE
+================================= */
+.success-container {
+    width: 900px;
+    padding: 50px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(18px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.success-left {
+    flex: 1;
+    text-align: left;
+}
+
+.success-left h2 {
+    color: #ffffff;
+    font-size: 32px;
+    margin-bottom: 12px;
+}
+
+.success-left p {
+    color: #e6f2ff;
+    font-size: 16px;
+}
+
+.info-box {
+    width: 260px;
+    padding: 25px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+}
+
+.info-box h4 {
+    margin: 12px 0;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.info-box span {
+    font-weight: 400;
+}
+
+.btn-dashboard {
+    margin-top: 20px;
+    display: inline-block;
+    padding: 12px 18px;
+    border-radius: 10px;
+    background: linear-gradient(90deg, #0ea5e9, #2563eb);
+    color: white;
+    font-weight: 500;
+    text-decoration: none;
+}

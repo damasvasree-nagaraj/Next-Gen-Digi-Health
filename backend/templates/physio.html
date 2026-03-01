@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Physiotherapy Demo</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/physio.css') }}">
+</head>
+
+<body>
+   <body class="physio-body">
+
+  <div class="page-center">
+    <div class="glass-card">
+
+      <button class="back-btn" onclick="window.history.back()">⬅ Back</button>
+
+      <h1>Physiotherapy Exercises</h1>
+      <p class="subtitle">Select an area to begin guided exercises</p>
+
+      <div class="exercise-tabs">
+        <button onclick="loadExercises('knee')">Knee</button>
+        <button onclick="loadExercises('shoulder')">Shoulder</button>
+        <button onclick="loadExercises('back')">Back</button>
+      </div>
+
+      <div id="exerciseArea" class="exercise-area">
+        <p class="placeholder">Choose an exercise category</p>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/physio.js') }}"></script>
+</body>
+</html>

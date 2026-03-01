@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Profile | Digi-Health</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+</head>
+
+<body>
+
+  <!-- TOP BAR -->
+  <header class="profile-header">
+    <h2>My Profile</h2>
+    <a href="/logout" class="logout-btn">Logout</a>
+  </header>
+
+  <!-- PROFILE CONTENT -->
+  <main class="profile-wrapper">
+    <div class="profile-card">
+
+      <div class="profile-row">
+        <span class="label">Name</span>
+        <span class="value">{{ session.user_name }}</span>
+      </div>
+
+      <div class="profile-row">
+        <span class="label">Email</span>
+        <span class="value">{{ session.user_email }}</span>
+      </div>
+
+      <div class="profile-row">
+        <span class="label">Role</span>
+        <span class="value">{{ session.user_role | capitalize }}</span>
+      </div>
+
+      <div class="profile-row">
+        <span class="label">Member Since</span>
+        <span class="value">January 2026</span>
+        <!-- later this can come from DB -->
+      </div>
+
+    </div>
+  </main>
+
+</body>
+</html>

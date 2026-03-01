@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Appointments</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<h2 class="page-title">My Appointments</h2>
+
+<div class="appointments-container">
+    {% for appointment in appointments %}
+    <div class="appointment-card {{ appointment.status|lower }}">
+
+        <div class="appointment-left">
+            <h3>{{ appointment.doctor_name }}</h3>
+            <p><span>Date📅: </span> {{ appointment.date }}</p>
+            <p><span>Time⏰: </span> {{ appointment.time }}</p>
+        </div>
+
+        <div class="appointment-right">
+            <span class="status-badge {{ appointment.status|lower }}">
+                {{ appointment.status }}
+            </span>
+
+            {% if appointment.status == "Confirmed" %}
+            <div class="action-buttons">
+                <form action="/patient/cancel/{{ appointment._id }}" method="POST">
+                    <button class="cancel-btn">Cancel</button>
+                </form>
+
+                <form action="/patient/reschedule/{{ appointment._id }}" method="POST">
+                    <button class="reschedule-btn">Reschedule</button>
+                </form>
+            </div>
+            {% endif %}
+        </div>
+
+    </div>
+    {% endfor %}
+</div>
+
+</body>
+</html>

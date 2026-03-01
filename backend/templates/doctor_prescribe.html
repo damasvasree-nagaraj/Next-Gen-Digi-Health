@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Prescription</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/doctor_panel.css') }}">
+</head>
+
+<body class="doctor-panel-page">
+
+<div class="panel-container">
+
+    <div class="form-card">
+
+        <div class="form-header">
+            <h1>Create Prescription</h1>
+            <p>Fill patient details and save prescription</p>
+        </div>
+
+        <form method="POST" class="modern-form">
+
+            <div class="input-group">
+                <label>Patient Name</label>
+                <input type="text" name="patient_name" required>
+            </div>
+
+            <div class="input-group">
+                <label>Diagnosis</label>
+                <textarea name="diagnosis" required></textarea>
+            </div>
+
+            <div class="input-group">
+                <label>Medicines</label>
+                <textarea name="medicines" placeholder="Separate with commas" required></textarea>
+            </div>
+
+            <div class="input-group">
+                <label>Additional Notes</label>
+                <textarea name="notes"></textarea>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="submit-btn">
+                    Save Prescription
+                </button>
+
+                <a href="/doctor" class="back-btn-secondary">
+                    Cancel
+                </a>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

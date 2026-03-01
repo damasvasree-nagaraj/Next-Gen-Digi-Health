@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Checkout</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/pharmacy.css') }}">
+</head>
+
+<body class="pharmacy-page">
+
+<div class="page-center">
+  <div class="glass-card">
+
+    <h1>Checkout</h1>
+
+    <h3>Order Summary</h3>
+    <div id="summary"></div>
+    <h3 id="total"></h3>
+
+    <h3>Delivery Address</h3>
+    <div class="form-grid">
+      <input id="name" placeholder="Full Name" required>
+      <input id="phone" placeholder="Phone Number" required>
+      <input id="address" placeholder="House / Street" required>
+      <input id="city" placeholder="City" required>
+      <input id="pincode" placeholder="Pincode" required>
+    </div>
+
+    <h3>Payment Method</h3>
+    <select id="payment">
+      <option value="UPI">UPI</option>
+      <option value="COD">Cash on Delivery</option>
+    </select>
+
+    <button onclick="placeOrder()">Place Order</button>
+
+  </div>
+</div>
+
+<script>
+function placeOrder() {
+
+    const name = document.getElementById("name").value;
+    const phone = document.getElementById("phone").value;
+    const address = document.getElementById("address").value;
+    const city = document.getElementById("city").value;
+    const pincode = document.getElementById("pincode").value;
+
+    // ✅ VALIDATION GOES HERE
+    if (!name || !phone || !address || !city || !pincode) {
+        alert("Please fill all delivery details");
+        return;
+    }
+
+    const orderData = {
+        name,
+        phone,
+        address,
+        city,
+        pincode,
+        payment: document.getElementById("payment").value,
+        items: JSON.parse(localStorage.getItem("cart")) || [],
+        total: JSON.parse(localStorage.getItem("cart"))
+            ?.reduce((sum, item) => sum + item.price * item.qty, 0) || 0
+    };
+
+    fetch("/checkout", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(orderData)
+    })
+    .then(res => res.json())
+    .then(data => {
+        window.location.href = data.redirect;
+    });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Book Appointment | Digi-Health</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="appointment-page">
+
+    <div class="appointment-container">
+
+        <div class="appointment-header">
+            <h1>Book Appointment</h1>
+            <p>Schedule your visit with our certified healthcare professionals</p>
+        </div>
+
+        <div class="appointment-card">
+
+{% if error %}
+<div class="error-message">
+    {{ error }}
+</div>
+{% endif %}
+
+            <form method="POST">
+
+                <div class="form-group">
+                    <label>Doctor</label>
+                    <select name="doctor_id" required>
+                        <option value="" disabled selected>Select Doctor</option>
+                        {% for doctor in doctors %}
+                            <option value="{{ doctor._id }}">
+                                {{ doctor.name }} - {{ doctor.specialization }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Appointment Date</label>
+                    <input type="date" name="appointment_date" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Appointment Time</label>
+                    <input type="time" name="appointment_time" required>
+                </div>
+
+                <button type="submit" class="confirm-btn">
+                    Confirm Appointment
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

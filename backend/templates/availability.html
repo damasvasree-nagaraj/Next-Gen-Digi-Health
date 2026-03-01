@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Doctor Availability</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/hospital.css') }}">
+</head>
+
+<body class="availability-page">
+
+<div class="availability-wrapper">
+
+    <div class="availability-card">
+
+        <h1 class="page-title">Doctor Availability</h1>
+
+        <!-- FORM -->
+        <form method="POST" class="availability-form">
+
+            <div class="form-group">
+                <label>Select Doctor</label>
+                <select name="doctor_id" required>
+                    {% for doctor in doctors %}
+                        <option value="{{ doctor._id }}">
+                            {{ doctor.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Select Date</label>
+                <input type="date" name="date" required>
+            </div>
+
+            <div class="form-group full-width">
+                <label>Select Time Slots</label>
+                <div class="slots">
+                    <label><input type="checkbox" name="time_slots" value="09:00"> 09:00</label>
+                    <label><input type="checkbox" name="time_slots" value="09:30"> 09:30</label>
+                    <label><input type="checkbox" name="time_slots" value="10:00"> 10:00</label>
+                    <label><input type="checkbox" name="time_slots" value="10:30"> 10:30</label>
+                </div>
+            </div>
+
+            <button type="submit" class="primary-btn">
+                Add Availability
+            </button>
+
+        </form>
+
+        <div class="divider"></div>
+
+        <!-- EXISTING -->
+        <h2 class="section-title">Existing Availability</h2>
+
+        <div class="availability-list">
+            {% for item in availability %}
+            <div class="availability-item">
+                <h3>{{ item.doctor_name }}</h3>
+                <p><strong>Date:</strong> {{ item.date }}</p>
+                <p><strong>Slots:</strong>
+                    {% for slot in item.time_slots %}
+                        <span class="slot-badge">{{ slot }}</span>
+                    {% endfor %}
+                </p>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

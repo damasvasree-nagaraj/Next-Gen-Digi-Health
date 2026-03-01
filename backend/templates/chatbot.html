@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AI Health Assistant</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot.css') }}">
+</head>
+<body>
+
+  <!-- Background -->
+  <div class="chatbot-bg"></div>
+
+  <!-- Main Container -->
+  <div class="chatbot-container">
+
+    <!-- Sidebar -->
+    <aside class="chatbot-sidebar">
+      <h2>AI Assistant</h2>
+
+      <button class="new-chat-btn">+ New Chat</button>
+
+      <div class="quick-questions">
+        <p class="section-title">Quick Help</p>
+        <button data-question="Fever">Fever</button>
+        <button data-question="Headache">Headache</button>
+        <button data-question="Cold & Cough">Cold & Cough</button>
+        <button data-question="Stomach Pain">Stomach Pain</button>
+      </div>
+
+      <div class="chat-history">
+        <p class="section-title">History</p>
+        <ul id="historyList"></ul>
+      </div>
+    </aside>
+
+    <!-- Chat Area -->
+    <main class="chatbot-main">
+      <div id="chatMessages" class="chat-messages">
+        <div class="bot-message">
+          👋 Hello! I’m your AI Health Assistant.  
+          How can I help you today?
+        </div>
+      </div>
+
+      <div class="chat-input">
+        <input type="text" id="userInput" placeholder="Type your health question..." />
+        <button id="sendBtn">Send</button>
+      </div>
+    </main>
+
+  </div>
+
+  <script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+</body>
+</html>

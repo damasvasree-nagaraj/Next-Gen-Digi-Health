@@ -1,0 +1,107 @@
+/* ===============================
+   AI COMMAND CENTER STYLING
+================================= */
+
+.ai-wrapper {
+    max-width: 1200px;
+    margin: 80px auto;
+    padding: 40px;
+    color: rgb(250, 249, 249);
+}
+
+.ai-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.ai-header h1 {
+    font-size: 42px;
+    font-weight: 600;
+}
+
+.ai-header p {
+    opacity: 0.85;
+    margin-top: 10px;
+}
+
+/* KPI GRID */
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+    margin-bottom: 50px;
+}
+
+/* KPI CARD */
+.kpi-card {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(14px);
+    border-radius: 18px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    transition: 0.3s ease;
+}
+
+.kpi-card:hover {
+    transform: translateY(-5px);
+}
+
+.kpi-card h3 {
+    font-size: 16px;
+    margin-bottom: 15px;
+    opacity: 0.8;
+}
+
+.kpi-value {
+    font-size: 28px;
+    font-weight: 600;
+}
+
+/* Glass Section */
+.glass-card {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    padding: 30px;
+    border-radius: 18px;
+    margin-bottom: 40px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+}
+
+.glass-card h2 {
+    margin-bottom: 20px;
+}
+
+/* Alerts */
+.alert-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.alert-list li {
+    margin-bottom: 10px;
+    padding: 10px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 8px;
+}
+
+/* AI Summary Text */
+.ai-text {
+    line-height: 1.6;
+    opacity: 0.9;
+}
+
+body.hospital-dashboard-bg {
+  background-image: url("../images/background/hospital-bg.jpg");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-color: #20cfea;
+}
+
+body.hospital-dashboard-bg {
+  background: url("../images/background/hospital-bg.jpg") 
+              no-repeat center center fixed;
+  background-size: cover;
+}

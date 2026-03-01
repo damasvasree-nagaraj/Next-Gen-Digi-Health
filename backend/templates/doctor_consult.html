@@ -1,0 +1,17 @@
+<h2>Patient Consultation</h2>
+
+<h3>Patient Info</h3>
+<p>Name: {{ patient.name }}</p>
+<p>Email: {{ patient.email }}</p>
+
+<h3>Basic Health Info</h3>
+<p>Blood Group: {{ record.basic_info.blood_group }}</p>
+<p>Allergies: {{ record.basic_info.allergies }}</p>
+<p>Chronic Conditions: {{ record.basic_info.chronic_conditions }}</p>
+
+<h3>Past Prescriptions</h3>
+<ul>
+{% for p in prescriptions %}
+  <li>{{ p.created_at }} - {{ p.notes }}</li>
+{% endfor %}
+</ul>

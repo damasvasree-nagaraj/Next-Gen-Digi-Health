@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Digi-Health Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+  <!-- TOP NAVBAR -->
+  <header class="top-nav">
+    <div class="logo">Digi-Health</div>
+
+    <div class="nav-right">
+      <a href="/profile" class="profile-link">
+        👤 {{ session.user_name }}
+      </a>
+
+      <a href="/logout" class="logout-btn">
+        Logout
+      </a>
+    </div>
+  </header>
+
+  <!-- DASHBOARD -->
+  <div class="dashboard-container">
+    <h1>Welcome to Digi-Health</h1>
+    <p class="subtitle">Your complete digital healthcare ecosystem</p>
+
+    <div class="card-grid">
+
+      <a href="/pharmacy" class="feature-card"
+         data-bg="{{ url_for('static', filename='images/dashboard/pharmacy.png') }}">
+        <div class="card-overlay">
+          <h3>E-Pharmacy</h3>
+          <p>Order medicines digitally</p>
+        </div>
+      </a>
+
+      <a href="/chatbot" class="feature-card"
+         data-bg="{{ url_for('static', filename='images/dashboard/ai.png') }}">
+        <div class="card-overlay">
+          <h3>AI Health Assistant</h3>
+          <p>Smart health guidance</p>
+        </div>
+      </a>
+
+      <a href="/physio" class="feature-card"
+         data-bg="{{ url_for('static', filename='images/dashboard/physio.png') }}">
+        <div class="card-overlay">
+          <h3>Physiotherapy Demo</h3>
+          <p>Recovery & exercise guidance</p>
+        </div>
+      </a>
+
+      <a href="/insurance" class="feature-card"
+         data-bg="{{ url_for('static', filename='images/dashboard/insurance.png') }}">
+        <div class="card-overlay">
+          <h3>Insurance Claim</h3>
+          <p>Easy claim management</p>
+        </div>
+      </a>
+
+      <a href="/book-appointment" class="feature-card"
+         data-bg="{{ url_for('static', filename='images/dashboard/appointment.jpg') }}">
+        <div class="card-overlay">
+          <h3>Appointment</h3>
+          <p>Book appointment</p>
+        </div>
+      </a>
+
+<a href="{{ url_for('my_appointments') }}"
+   class="dashboard-card my-appointments-card">
+    <div class="card-overlay">
+        <h3>My Appointments</h3>
+        <p>View & manage bookings</p>
+    </div>
+
+</a>
+
+
+    </div>
+  </div>
+
+  <!-- JS -->
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+
+</body>
+</html>

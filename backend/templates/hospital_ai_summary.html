@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Hospital Command Center</title>
+
+    <!-- Global CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- Dedicated AI CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ai_summary.css') }}">
+</head>
+
+<body class="hospital-dashboard-bg">
+
+<div class="ai-wrapper">
+
+    <div class="ai-header">
+        <h1>AI Hospital Command Intelligence</h1>
+        <p>Enterprise operational insights powered by analytics</p>
+    </div>
+
+    <!-- KPI SECTION -->
+    <div class="kpi-grid">
+
+        <div class="kpi-card">
+            <h3>Total Appointments</h3>
+            <div class="kpi-value">{{ total }}</div>
+        </div>
+
+        <div class="kpi-card">
+            <h3>Cancellation Rate</h3>
+            <div class="kpi-value">{{ cancellation_rate }}%</div>
+        </div>
+
+        <div class="kpi-card">
+            <h3>Peak Hour</h3>
+            <div class="kpi-value">{{ peak_hour }}</div>
+        </div>
+
+        <div class="kpi-card">
+            <h3>Most Active Doctor</h3>
+            <div class="kpi-value">{{ most_active_doctor }}</div>
+        </div>
+
+    </div>
+
+    <!-- ALERT SECTION -->
+    <div class="glass-card">
+        <h2>Operational Risk Alerts</h2>
+        <ul class="alert-list">
+            {% for alert in alerts %}
+                <li>{{ alert }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- AI SUMMARY -->
+    <div class="glass-card">
+        <h2>Executive AI Report</h2>
+        <p class="ai-text">{{ ai_summary }}</p>
+    </div>
+
+</div>
+
+</body>
+</html>

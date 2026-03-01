@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hospital Control Panel</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="hospital-dashboard-bg" >
+
+
+    <div class="hospital-hero">
+    <div class="hero-overlay">
+        <h1>Hospital Management Dashboard</h1>
+    </div>
+</div>
+
+<!-- TOP NAV -->
+<header class="top-nav">
+  <div class="logo">Hospital Panel</div>
+
+  <div class="nav-right">
+    <a href="/logout" class="logout-btn">Logout</a>
+  </div>
+</header>
+
+<div class="dashboard-container">
+
+  <h1>Hospital Command Center</h1>
+  <p class="subtitle">Manage patients, doctors, appointments & AI insights</p>
+
+  <div class="card-grid">
+
+    <!-- Patient Search -->
+    <a href="/hospital/patient-search" class="feature-card"
+       data-bg="{{ url_for('static', filename='images/dashboard/patient.png') }}">
+      <div class="card-overlay">
+        <h3>Patient Records</h3>
+        <p>View full medical history</p>
+      </div>
+    </a>
+
+    <!-- Appointments -->
+    <a href="/hospital/appointments" class="feature-card"
+       data-bg="{{ url_for('static', filename='images/dashboard/appointment_doctor.jpg') }}">
+      <div class="card-overlay">
+        <h3>Appointments</h3>
+        <p>Reschedule / manage bookings</p>
+      </div>
+    </a>
+
+    <!-- Doctor Availability -->
+    <a href="/hospital/availability" class="feature-card"
+       data-bg="{{ url_for('static', filename='images/dashboard/doctor.png') }}">
+      <div class="card-overlay">
+        <h3>Doctor Availability</h3>
+        <p>Track & manage doctor schedules</p>
+      </div>
+    </a>
+
+    <!-- AI Summary -->
+    <a href="/hospital/ai-summary" class="feature-card"
+       data-bg="{{ url_for('static', filename='images/dashboard/ai.png') }}">
+      <div class="card-overlay">
+        <h3>AI Summary</h3>
+        <p>Summarize patient data instantly</p>
+      </div>
+    </a>
+
+  </div>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+
+</body>
+</html>

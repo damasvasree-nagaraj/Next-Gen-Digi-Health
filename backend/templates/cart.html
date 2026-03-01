@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Your Cart</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/pharmacy.css') }}">
+</head>
+
+<body class="pharmacy-page">
+
+<div class="page-center">
+  <div class="glass-card">
+
+    <h1>Your Cart</h1>
+    <div id="cartItems"></div>
+    <h3 id="totalAmount"></h3>
+
+    <a href="/upload-prescription" class="view-cart-btn">Upload Prescription (Optional)</a>
+    <button class="primary-btn" onclick="goCheckout()">Proceed to Checkout</button>
+
+  </div>
+</div>
+
+<script>
+const cartItemsDiv = document.getElementById("cartItems");
+const totalAmountEl = document.getElementById("totalAmount");
+
+const cart = JSON.parse(localStorage.getItem("cart")) || [];
+let total = 0;
+
+if (cart.length === 0) {
+  cartItemsDiv.innerHTML = "<p>Your cart is empty</p>";
+} else {
+  cart.forEach(item => {
+    total += item.price * item.qty;
+    cartItemsDiv.innerHTML += `
+      <p>${item.name} × ${item.qty} — ₹${item.price * item.qty}</p>
+    `;
+  });
+}
+
+totalAmountEl.innerText = `Total Amount: ₹${total}`;
+
+function goCheckout() {
+  if (cart.length === 0) {
+    alert("Your cart is empty!");
+    return;
+  }
+  window.location.href = "/checkout";
+}
+</script>
+
+</body>
+</html>

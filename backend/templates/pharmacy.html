@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Pharmacy</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/pharmacy.css') }}">
+</head>
+
+<body class="pharmacy-page">
+
+<div class="page-center">
+  <div class="glass-card">
+    <h1>E-Pharmacy</h1>
+
+    <div class="filter-bar">
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search medicines..."
+        onkeyup="applyFilters()"
+      >
+
+      <select id="categoryFilter" onchange="applyFilters()">
+        <option value="All">All Categories</option>
+        <option value="Tablets">Tablets</option>
+        <option value="Syrups">Syrups</option>
+        <option value="Devices">Devices</option>
+      </select>
+    </div>
+
+    <div id="medicineGrid" class="medicine-grid"></div>
+
+    <a href="/cart" class="view-cart-btn">View Cart 🛒</a>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/pharmacy.js') }}"></script>
+</body>
+</html>

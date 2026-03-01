@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Patient Record</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/hospital.css') }}">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Patient Medical Record</h1>
+
+    <div class="result-card">
+        <p><span class="label">Name:</span> {{ patient.name }}</p>
+        <p><span class="label">Email:</span> {{ patient.email }}</p>
+        <p><span class="label">Patient ID:</span> {{ patient._id }}</p>
+    </div>
+
+    <div class="result-card">
+        <h3>Appointments</h3>
+        {% for appt in appointments %}
+            <p>{{ appt.date }} - {{ appt.reason }}</p>
+        {% else %}
+            <p>No appointments found.</p>
+        {% endfor %}
+    </div>
+
+    <div class="result-card">
+        <h3>Prescriptions</h3>
+        {% for pres in prescriptions %}
+            <p>{{ pres.medicine }} - {{ pres.dosage }}</p>
+        {% else %}
+            <p>No prescriptions found.</p>
+        {% endfor %}
+    </div>
+
+</div>
+
+</body>
+</html>

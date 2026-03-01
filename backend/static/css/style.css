@@ -1,0 +1,944 @@
+/* ================= GLOBAL RESET ================= */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ================= GLOBAL BACKGROUND ================= */
+
+body {
+  min-height: 100vh;
+  font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* SAME background image for ALL pages */
+  background-image: url("../images/background/dashboard-bg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
+  color: #ffffff;
+  position: relative;
+}
+
+/* Professional medical color overlay (NO grey) */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(6, 32, 48, 0.92),
+    rgba(0, 110, 120, 0.78)
+  );
+  z-index: -1;
+}
+
+/* ================= CENTER WRAPPER (LOGIN / REGISTER) ================= */
+
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ================= AUTH CARD (LOGIN + REGISTER) ================= */
+
+.card {
+  width: 100%;
+  max-width: 380px;
+  padding: 32px 28px;
+
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 18px;
+
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
+  text-align: center;
+
+  color: #0b4f6c;
+}
+
+/* Title */
+.card h2 {
+  margin-bottom: 22px;
+  font-size: 26px;
+  font-weight: 600;
+}
+
+/* ================= INPUTS ================= */
+
+.card input,
+.card select {
+  width: 100%;
+  padding: 12px 14px;
+  margin: 10px 0;
+
+  border-radius: 10px;
+  border: 1px solid #cfd8dc;
+  font-size: 15px;
+
+  background: #ffffff;
+  color: #0b4f6c;
+}
+
+.card input:focus,
+.card select:focus {
+  outline: none;
+  border-color: #0aa1a7;
+  box-shadow: 0 0 0 2px rgba(10, 161, 167, 0.2);
+}
+
+/* ================= BUTTON ================= */
+
+.card button {
+  width: 100%;
+  padding: 13px;
+  margin-top: 16px;
+
+  background: linear-gradient(135deg, #0aa1a7, #0b4f6c);
+  color: #ffffff;
+
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(11, 79, 108, 0.4);
+}
+
+/* ================= TEXT LINKS ================= */
+
+.register-text {
+  margin-top: 16px;
+  font-size: 14px;
+}
+
+.register-text a {
+  color: #0aa1a7;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.register-text a:hover {
+  text-decoration: underline;
+}
+
+/* ================= DASHBOARD ================= */
+
+.dashboard-container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 80px 40px;
+  text-align: center;
+}
+
+.dashboard-container h1 {
+  font-size: 42px;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.subtitle {
+  font-size: 16px;
+  opacity: 0.9;
+  margin-bottom: 50px;
+}
+
+/* ================= CARD GRID ================= */
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(240px, 1fr));
+  gap: 30px;
+}
+
+/* ================= FEATURE CARD ================= */
+
+.feature-card {
+  position: relative;
+  height: 220px;
+  border-radius: 22px;
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  overflow: hidden;
+  cursor: pointer;
+  text-decoration: none;
+  color: #ffffff;
+
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* Dark overlay on cards */
+.feature-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.6),
+    rgba(0, 0, 0, 0.25)
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Card text */
+.card-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 24px;
+}
+
+.card-overlay h3 {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.card-overlay p {
+  font-size: 14px;
+  margin-top: 6px;
+  opacity: 0.9;
+}
+
+/* Hover effect */
+.feature-card:hover {
+  transform: translateY(-10px) scale(1.03);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45);
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 900px) {
+  .card-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 500px) {
+  .dashboard-container {
+    padding: 60px 20px;
+  }
+
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pharmacy-body {
+  background-image: url("../images/background/pharmacy-bg.png");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.page-center {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.glass-card {
+  width: 100%;
+  max-width: 900px;
+  padding: 40px;
+  border-radius: 24px;
+
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(22px);
+  box-shadow: 0 35px 70px rgba(0, 0, 0, 0.45);
+
+  color: #fff;
+  animation: fadeUp 0.8s ease;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.status-list {
+  list-style: none;
+  padding: 0;
+  font-size: 18px;
+}
+
+.status-list li {
+  margin: 12px 0;
+}
+
+.primary-btn {
+  margin-top: 30px;
+  padding: 14px 28px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #00bcd4, #0097a7);
+  border: none;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.profile-info p {
+  font-size: 18px;
+  margin: 14px 0;
+}
+
+/* ================= TOP NAV BAR ================= */
+
+.top-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 64px;
+  padding: 0 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  background: rgba(8, 44, 58, 0.92);
+  backdrop-filter: blur(10px);
+
+  z-index: 1000;
+}
+
+/* App title */
+.top-nav .logo {
+  font-size: 20px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+/* Right side */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Profile link */
+.profile-link {
+  color: #e0f7fa;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.profile-link:hover {
+  text-decoration: underline;
+}
+
+/* Logout button */
+.logout-btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+
+  background: #ff5252;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+
+  transition: background 0.3s ease;
+}
+
+.logout-btn:hover {
+  background: #e53935;
+}
+
+/* Push dashboard content down */
+.dashboard-container {
+  margin-top: 90px;
+}
+
+.role-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.role-card {
+  width: 420px;
+  padding: 40px;
+  border-radius: 24px;
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(18px);
+  text-align: center;
+}
+
+.role-card h1 {
+  margin-bottom: 30px;
+}
+
+.role-btn {
+  display: block;
+  margin: 14px 0;
+  padding: 14px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 600;
+  color: white;
+}
+
+.patient { background: #00bfa5; }
+.doctor { background: #42a5f5; }
+.hospital { background: #ef5350; }
+
+/* ===============================
+   APPOINTMENT BACKGROUND
+   =============================== */
+
+/* ===============================
+   APPOINTMENT PROFESSIONAL UI
+   =============================== */
+
+.appointment-page {
+    min-height: 100vh;
+
+    background-image: url("../images/background/appointment-bg.jpg");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-family: "Segoe UI", sans-serif;
+}
+
+.appointment-container {
+    width: 100%;
+    max-width: 600px;
+    padding: 30px;
+    color: white;
+}
+
+.appointment-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.appointment-header h1 {
+    font-size: 40px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.appointment-header p {
+    opacity: 0.85;
+}
+
+.appointment-card {
+    background: rgba(17, 143, 171, 0.65);   /* lighter glass */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+
+    border-radius: 20px;
+    padding: 40px;
+
+    border: 1px solid rgba(107, 221, 232, 0.6);
+
+    box-shadow: 
+        0 20px 40px rgba(0,0,0,0.15),
+        0 0 40px rgba(0,150,255,0.1);
+
+    color: #1f2d3d;  /* dark text now */
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    border: none;
+    font-size: 15px;
+    background: rgba(255,255,255,0.9);
+    outline: none;
+    transition: 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    box-shadow: 0 0 0 3px rgba(49, 197, 238, 0.4);
+}
+
+/* 🔥 PROFESSIONAL BUTTON */
+.confirm-btn {
+    width: 100%;
+    padding: 16px;
+    border-radius: 12px;
+    border: none;
+
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
+    color: white;
+
+    font-weight: 600;
+    font-size: 16px;
+
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.confirm-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 114, 255, 0.4);
+}
+
+/* ===============================
+   LIGHT THEME OVERRIDE (APPOINTMENT)
+   =============================== */
+
+.appointment-page::before {
+    background: linear-gradient(
+        135deg,
+        rgba(15, 244, 248, 0.75),
+        rgba(9, 94, 111, 0.85)
+    ) !important;
+}
+
+/* ===============================
+   SUCCESS PAGE
+   =============================== */
+
+.success-card {
+    text-align: center;
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(25px);
+    border-radius: 24px;
+    padding: 50px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+.success-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px auto;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #00c853, #2e7d32);
+    color: white;
+    font-size: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 25px rgba(0, 200, 83, 0.4);
+}
+
+.success-card h2 {
+    margin-bottom: 10px;
+    color: #0b4f6c;
+}
+
+.success-text {
+    margin-bottom: 25px;
+    color: #3a5f70;
+}
+
+.appointment-details {
+    background: rgba(255,255,255,0.7);
+    padding: 20px;
+    border-radius: 14px;
+    margin-bottom: 30px;
+    color: #1f2d3d;
+    text-align: left;
+}
+
+/* ===============================
+   APPOINTMENT ERROR
+   =============================== */
+
+.error-message {
+    background: rgba(255, 82, 82, 0.15);
+    color: #c62828;
+    padding: 14px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 500;
+    border: 1px solid rgba(255, 82, 82, 0.4);
+}
+
+.reschedule-btn {
+    background: #0066ff;
+    color: white;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 6px;
+    margin-top: 8px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.reschedule-btn:hover {
+    background: #004ecc;
+}
+
+.cancel-btn {
+    background: #e53935;
+    color: white;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 6px;
+    margin-top: 8px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.cancel-btn:hover {
+    background: #c62828;
+}
+
+/* Make My Appointments SAME as other feature cards */
+.dashboard-card {
+    position: relative;
+    height: 220px;              /* same height */
+    border-radius: 22px;        /* same radius */
+    overflow: hidden;
+    cursor: pointer;
+    text-decoration: none;
+    color: #ffffff;
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* Dark overlay like other cards */
+.dashboard-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to top,
+        rgba(0,0,0,0.6),
+        rgba(0,0,0,0.25)
+    );
+    z-index: 1;
+}
+
+/* Text overlay */
+.dashboard-card .card-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 24px;
+}
+
+/* Zoom hover effect */
+.dashboard-card:hover {
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.45);
+}
+
+.my-appointments-card {
+    background-image: url("/static/images/dashboard/patient_appointment.jpg");
+    background-size: cover;
+    background-position: center;
+}
+
+.page-title {
+    color: white;
+    font-size: 32px;
+    margin-bottom: 30px;
+}
+
+.appointments-container {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+  
+
+/* Left side */
+.appointment-left h3 {
+    margin-bottom: 8px;
+    font-size: 20px;
+    color: white;
+}
+
+.appointment-left p {
+    margin: 4px 0;
+    color: #e0f7fa;
+    font-size: 15px;
+}
+
+/* Status Badge */
+.status-badge {
+    padding: 8px 18px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* Status Colors */
+.status-badge.confirmed {
+    background: #28a745;
+    color: white;
+}
+
+.status-badge.cancelled {
+    background: #dc3545;
+    color: white;
+}
+
+/* Buttons */
+.action-buttons {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+}
+
+.cancel-btn {
+    background: #ff4d4d;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+}
+
+.reschedule-btn {
+    background: #00bcd4;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+}
+
+.cancel-btn:hover {
+    background: #e60000;
+}
+
+.reschedule-btn:hover {
+    background: #0097a7;
+}
+
+/* ===============================
+   HOSPITAL DASHBOARD ONLY
+   =============================== */
+body.hospital-dashboard-bg::before {
+  display: none;
+}
+body.hospital-dashboard-bg {
+  background-image: url("../images/background/hospital-dashboard-bg.jpg");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-color: #eaede6;
+}
+
+body.hospital-dashboard-bg {
+  background: url("../images/background/hospital-dashboard-bg.jpg") 
+              no-repeat center center fixed;
+  background-size: cover;
+}
+
+/* AI COMMAND CENTER */
+
+.ai-container {
+    max-width: 1200px;
+    margin: 80px auto;
+    padding: 40px;
+    color: white;
+}
+
+.ai-title {
+    text-align: center;
+    font-size: 42px;
+    font-weight: 600;
+}
+
+.ai-subtitle {
+    text-align: center;
+    margin-bottom: 50px;
+    opacity: 0.85;
+}
+
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+    margin-bottom: 50px;
+}
+
+.kpi-card {
+    backdrop-filter: blur(14px);
+    background: rgba(255,255,255,0.08);
+    border-radius: 18px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+}
+
+.kpi-card h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.kpi-card p {
+    font-size: 28px;
+    font-weight: 600;
+}
+
+.alert-section {
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(12px);
+    padding: 30px;
+    border-radius: 18px;
+    margin-bottom: 40px;
+}
+
+.ai-summary-box {
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(12px);
+    padding: 30px;
+    border-radius: 18px;
+}
+
+/* =========================================
+   FINAL ALIGNMENT FIX – APPOINTMENT PAGES
+========================================= */
+
+/* Ensure appointment pages center perfectly */
+body.appointment-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+}
+
+/* Fix container width + centering */
+.appointment-container {
+    width: 100%;
+    max-width: 650px;
+    margin: auto;
+}
+
+/* Fix glass card alignment */
+.appointment-card {
+    width: 100%;
+    border-radius: 24px;
+    padding: 45px;
+    text-align: left;
+}
+
+/* Header center alignment */
+.appointment-header {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+/* Fix input spacing */
+.appointment-card .form-group {
+    margin-bottom: 28px;
+}
+
+/* Fix labels */
+.appointment-card label {
+    color: #ffffff;
+    font-weight: 500;
+}
+
+/* Fix confirm button alignment */
+.appointment-card .confirm-btn {
+    margin-top: 10px;
+}
+
+/* =========================================
+   SUCCESS PAGE PROFESSIONAL ALIGNMENT
+========================================= */
+
+.success-card {
+    text-align: center;
+    padding: 55px 45px;
+    max-width: 520px;
+    margin: auto;
+}
+
+/* Success icon perfectly centered */
+.success-icon {
+    margin-bottom: 25px;
+}
+
+/* Fix details box spacing */
+.success-card .appointment-details {
+    margin-top: 20px;
+    margin-bottom: 30px;
+    padding: 22px;
+    border-radius: 16px;
+}
+
+/* Ensure button centered */
+.success-card .confirm-btn {
+    display: inline-block;
+    margin-top: 10px;
+}
+
+/* Improve readability */
+.success-card h2 {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.success-text {
+    font-size: 16px;
+    margin-bottom: 25px;
+}
+
+/* =========================================
+   REMOVE CONFLICT FROM OTHER APPOINTMENT CARD STYLE
+========================================= */
+
+/* Prevent my-appointments card style from affecting success page */
+.appointments-container .appointment-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+

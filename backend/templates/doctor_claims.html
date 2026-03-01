@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Insurance Claims</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/doctor_panel.css') }}">
+</head>
+
+<body class="doctor-panel-page">
+
+<div class="panel-container">
+
+    <h1>Insurance Claims</h1>
+
+    <div class="glass-card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Patient</th>
+                    <th>Treatment</th>
+                    <th>Claim Amount</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for c in claims %}
+                <tr>
+                    <td>{{ c.patient_name }}</td>
+                    <td>{{ c.treatment }}</td>
+                    <td>₹ {{ c.amount }}</td>
+                    <td>{{ c.status }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <a href="/doctor" class="back-btn">Back to Dashboard</a>
+
+</div>
+
+</body>
+</html>
