@@ -234,3 +234,83 @@ textarea {
     gap: 15px;
     margin-top: 15px;
 }
+
+/* STATUS COLORS */
+.status-badge {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.status-badge.pending {
+    background: #ff9800;
+    color: white;
+}
+
+.status-badge.approved {
+    background: #28a745;
+    color: white;
+}
+
+.status-badge.rejected {
+    background: #dc3545;
+    color: white;
+}
+
+/* FRAUD */
+.fraud-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.fraud-badge.safe {
+    background: #2ecc71;
+    color: white;
+}
+
+.fraud-badge.high\ risk {
+    background: #e74c3c;
+    color: white;
+}
+
+.fraud-badge.frequent\ claimer {
+    background: #f39c12;
+    color: white;
+}
+
+/* BUTTONS */
+.approve-btn {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.reject-btn {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.approve-btn:hover {
+    background: #218838;
+}
+
+.reject-btn:hover {
+    background: #c82333;
+}
+
+/* DONE TEXT */
+.done-text {
+    color: #ccc;
+    font-size: 13px;
+}

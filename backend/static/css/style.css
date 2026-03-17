@@ -491,6 +491,27 @@ body::before {
     outline: none;
     transition: 0.3s ease;
 }
+/* Professional dropdown only */
+.form-group select{
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    border: 1px solid #cfd8dc;
+    border-radius: 8px;
+
+    padding: 10px 36px 10px 12px;
+
+    font-weight: 500;
+    color: #0b4f6c;
+
+    background:#ffffff url("data:image/svg+xml;utf8,<svg fill='%230b4f6c' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>")
+    no-repeat right 10px center;
+
+    background-size:16px;
+
+    cursor:pointer;
+}
 
 .form-group input:focus,
 .form-group select:focus {
@@ -712,6 +733,7 @@ body::before {
     border-radius: 50px;
     font-size: 14px;
     font-weight: bold;
+    margin-left: 12px; 
 }
 
 /* Status Colors */
@@ -940,5 +962,147 @@ body.appointment-page {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.video-join-btn{
+
+background: linear-gradient(135deg,#00c6ff,#0072ff);
+
+color: white;
+
+border: none;
+
+padding: 10px 20px;
+
+border-radius: 8px;
+
+font-size: 14px;
+
+font-weight: 600;
+
+cursor: pointer;
+
+margin-left: 10px;
+
+transition: all 0.3s ease;
+
+box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+
+}
+
+.video-join-btn:hover{
+
+background: linear-gradient(135deg,#0072ff,#0052cc);
+
+transform: translateY(-2px);
+
+box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+
+}
+
+.appointment-info{
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.appointment-actions{
+display:flex;
+gap:12px;
+margin-top:18px;
+flex-wrap:wrap;
+align-items:center;
+}
+
+/* buttons */
+
+.cancel-btn{
+background:#ff4d4d;
+border:none;
+color:white;
+padding:8px 14px;
+border-radius:6px;
+cursor:pointer;
+}
+
+.reschedule-btn{
+background:#34abc6;
+border:none;
+color:white;
+padding:8px 14px;
+border-radius:6px;
+cursor:pointer;
+}
+
+.video-join-btn{
+background:linear-gradient(135deg,#00c6ff,#0072ff);
+border:none;
+color:white;
+padding:10px 8px;
+border-radius:8px;
+font-weight:600;
+cursor:pointer;
+box-shadow:0 4px 12px rgba(0,0,0,0.2);
+}
+
+.video-join-btn:hover{
+transform:translateY(-2px);
+box-shadow:0 6px 16px rgba(0,0,0,0.25);
+}
+
+.user-name {
+  position: relative;
+  color: white;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.user-name::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 60%;
+  height: 2px;
+  background-color: white;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.user-name:hover {
+  opacity: 0.8;
+  transform: scale(1.05);
+}
+
+.user-name:hover::after {
+  width: 100%;
+}
+
+.top-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 64px;
+  padding: 0 40px;
+
+  display: flex;
+  justify-content: space-between; /* 🔥 KEY */
+  align-items: center;
+
+  background: rgba(8, 44, 58, 0.92);
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+}
+
+.top-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+  margin-left: auto; /* 🔥 FORCE RIGHT SIDE */
 }
 

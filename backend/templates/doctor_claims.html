@@ -3,6 +3,125 @@
 <head>
     <title>Insurance Claims</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/doctor_panel.css') }}">
+
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 14px;
+            text-align: center;
+        }
+
+        th {
+            background: rgba(255,255,255,0.1);
+        }
+
+        tr {
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* STATUS BADGES */
+        .status-badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .status-badge.pending {
+            background: orange;
+            color: white;
+        }
+
+        .status-badge.approved {
+            background: #28a745;
+            color: white;
+        }
+
+        .status-badge.rejected {
+            background: #dc3545;
+            color: white;
+        }
+
+        .status-badge.under\ review {
+            background: #6c757d;
+            color: white;
+        }
+
+        /* FRAUD BADGES */
+        .fraud-badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .fraud-badge.safe {
+            background: #28a745;
+            color: white;
+        }
+
+        .fraud-badge.high\ risk {
+            background: #dc3545;
+            color: white;
+        }
+
+        .fraud-badge.frequent\ claimer {
+            background: orange;
+            color: white;
+        }
+
+        /* BUTTONS */
+        .approve-btn {
+            background: #28a745;
+            border: none;
+            padding: 8px 14px;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-right: 6px;
+        }
+
+        .approve-btn:hover {
+            background: #218838;
+        }
+
+        .reject-btn {
+            background: #dc3545;
+            border: none;
+            padding: 8px 14px;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .reject-btn:hover {
+            background: #c82333;
+        }
+
+        .done-text {
+            color: #aaa;
+            font-size: 13px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 10px 18px;
+            background: #0072ff;
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+        }
+
+        .back-btn:hover {
+            background: #0052cc;
+        }
+    </style>
 </head>
 
 <body class="doctor-panel-page">
@@ -12,30 +131,79 @@
     <h1>Insurance Claims</h1>
 
     <div class="glass-card">
+
+        {% if claims|length == 0 %}
+            <p style="text-align:center; opacity:0.7;">No claims available</p>
+        {% else %}
+
         <table>
             <thead>
                 <tr>
                     <th>Patient</th>
                     <th>Treatment</th>
-                    <th>Claim Amount</th>
+                    <th>Amount</th>
                     <th>Status</th>
+                    <th>Fraud Check</th>
+                    <th>Action</th>
                 </tr>
             </thead>
 
             <tbody>
                 {% for c in claims %}
                 <tr>
+
+                    <!-- PATIENT -->
                     <td>{{ c.patient_name }}</td>
+
+                    <!-- TREATMENT -->
                     <td>{{ c.treatment }}</td>
+
+                    <!-- AMOUNT -->
                     <td>₹ {{ c.amount }}</td>
-                    <td>{{ c.status }}</td>
+
+                    <!-- STATUS -->
+                    <td>
+                        <span class="status-badge {{ c.status|lower }}">
+                            {{ c.status }}
+                        </span>
+                    </td>
+
+                    <!-- FRAUD -->
+                    <td>
+                        <span class="fraud-badge {{ (c.fraud_flag or 'Safe')|lower }}">
+                            {{ c.fraud_flag or "Safe" }}
+                        </span>
+                    </td>
+
+                    <!-- ACTION -->
+                    <td>
+
+                        {% if c.status == "Pending" %}
+
+                        <form action="/doctor/approve-claim/{{ c._id }}" method="POST" style="display:inline;">
+                            <button type="submit" class="approve-btn">Approve</button>
+                        </form>
+
+                        <form action="/doctor/reject-claim/{{ c._id }}" method="POST" style="display:inline;">
+                            <button type="submit" class="reject-btn">Reject</button>
+                        </form>
+
+                        {% else %}
+                            <span class="done-text">Completed</span>
+                        {% endif %}
+
+                    </td>
+
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
+
+        {% endif %}
+
     </div>
 
-    <a href="/doctor" class="back-btn">Back to Dashboard</a>
+    <a href="/doctor" class="back-btn">← Back to Dashboard</a>
 
 </div>
 

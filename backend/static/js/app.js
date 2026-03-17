@@ -34,10 +34,11 @@ function register() {
   })
   .then(res => res.json())
   .then(data => {
-    if (data.redirect) {
-      window.location.href = data.redirect;
+    if (data.error) {
+      alert(data.error);
     } else {
-      alert(data.error || "Registration failed");
+      alert(data.message || "Registration successful ✅");
+      window.location.href = "/login/patient";
     }
   });
 }
@@ -60,3 +61,5 @@ document.addEventListener("DOMContentLoaded", () => {
     card.style.backgroundImage = `url('${bg}')`;
   });
 });
+
+

@@ -175,6 +175,56 @@ body.doctor-page::before {
     background: rgba(255, 255, 255, 0.18);
 }
 
+.video-btn {
+
+background: linear-gradient(135deg,#00c6ff,#0072ff);
+
+color: white;
+
+border: none;
+
+padding: 12px 26px;
+
+font-size: 16px;
+
+font-weight: 600;
+
+border-radius: 8px;
+
+cursor: pointer;
+
+transition: 0.3s;
+
+box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+
+}
+
+.video-btn:hover {
+
+transform: translateY(-2px);
+
+box-shadow: 0 8px 22px rgba(0,0,0,0.3);
+
+background: linear-gradient(135deg,#0072ff,#00c6ff);
+
+}
+
+.appointment-page{
+
+background-image:
+linear-gradient(rgba(61, 224, 245, 0.75), rgba(98, 200, 214, 0.75)),
+url("/static/images/background/appointment-bg.jpg");
+
+background-size: cover;
+background-position: center;
+background-repeat: no-repeat;
+background-attachment: fixed;
+
+min-height: 100vh;
+color: white;
+
+}
+
 /* ================= RESPONSIVE ================= */
 
 @media (max-width: 768px) {

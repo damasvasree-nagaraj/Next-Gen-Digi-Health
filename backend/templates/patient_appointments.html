@@ -4,40 +4,81 @@
     <title>My Appointments</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
+
 <body>
 
 <h2 class="page-title">My Appointments</h2>
 
 <div class="appointments-container">
-    {% for appointment in appointments %}
-    <div class="appointment-card {{ appointment.status|lower }}">
+
+{% for appointment in appointments %}
+
+<div class="appointment-card {{ appointment.status|lower }}">
+
+    <div class="appointment-info">
 
         <div class="appointment-left">
             <h3>{{ appointment.doctor_name }}</h3>
-            <p><span>Date📅: </span> {{ appointment.date }}</p>
-            <p><span>Time⏰: </span> {{ appointment.time }}</p>
+            <p><span>Date 📅:</span> {{ appointment.date }}</p>
+            <p><span>Time ⏰:</span> {{ appointment.time }}</p>
         </div>
 
-        <div class="appointment-right">
-            <span class="status-badge {{ appointment.status|lower }}">
-                {{ appointment.status }}
-            </span>
+        <div class="appointment-status">
 
-            {% if appointment.status == "Confirmed" %}
-            <div class="action-buttons">
-                <form action="/patient/cancel/{{ appointment._id }}" method="POST">
-                    <button class="cancel-btn">Cancel</button>
-                </form>
+            {% if appointment.status == "Completed" %}
+                <span class="status-badge cancelled">
+                    Appointment Over
+                </span>
 
-                <form action="/patient/reschedule/{{ appointment._id }}" method="POST">
-                    <button class="reschedule-btn">Reschedule</button>
-                </form>
-            </div>
+            {% elif appointment.status == "Cancelled" %}
+                <span class="status-badge cancelled">
+                    Cancelled
+                </span>
+
+            {% else %}
+                <span class="status-badge confirmed">
+                    Confirmed
+                </span>
             {% endif %}
+
         </div>
 
     </div>
-    {% endfor %}
+
+    <!-- ✅ ACTIONS -->
+    {% if appointment.status == "Confirmed" %}
+    <div class="appointment-actions">
+
+        <form action="/patient/cancel/{{ appointment._id }}" method="POST">
+            <button class="cancel-btn">Cancel</button>
+        </form>
+
+        <form action="/patient/reschedule/{{ appointment._id }}" method="POST">
+            <button class="reschedule-btn">Reschedule</button>
+        </form>
+
+        {% if appointment.appointment_type == "video" %}
+        <a href="/video_call/{{ appointment.video_room }}" target="_blank">
+            <button class="video-join-btn">
+                🎥 Join Video Consultation
+            </button>
+        </a>
+        {% endif %}
+
+    </div>
+    {% else %}
+
+    <!-- 🔥 SHOW MESSAGE WHEN COMPLETED -->
+    <div style="margin-top:15px; color:#d0e7ea; font-size:14px;">
+        ⏱ This appointment has ended
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endfor %}
+
 </div>
 
 </body>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Video Appointments | Digi Health</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/doctor.css') }}">
+
+</head>
+
+<body class="appointment-page">
+
+<!-- TOP BAR -->
+<div class="doctor-topbar">
+    <h2 class="doctor-logo">Digi Health</h2>
+    <a href="/logout" class="doctor-logout-btn">Logout</a>
+</div>
+
+<div class="doctor-wrapper">
+
+<h1 class="doctor-title">Video Consultation Appointments</h1>
+
+<div class="doctor-card-grid">
+
+{% if appointments|length == 0 %}
+
+<p style="color:white;">No video appointments available.</p>
+
+{% endif %}
+
+{% for appointment in appointments %}
+
+<div class="doctor-card">
+
+<h3>Patient: {{ appointment.patient_name }}</h3>
+
+<p>Date: {{ appointment.date }}</p>
+<p>Time: {{ appointment.time }}</p>
+
+<a href="/video_call/{{ appointment.video_room }}" target="_blank">
+<button class="video-btn">
+🎥 Start Video Consultation
+</button>
+</a>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</div>
+
+</body>
+</html>

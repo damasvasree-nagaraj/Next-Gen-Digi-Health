@@ -8,20 +8,23 @@
 
 <body>
 
-  <!-- TOP NAVBAR -->
-  <header class="top-nav">
-    <div class="logo">Digi-Health</div>
+<header class="top-nav">
 
-    <div class="nav-right">
-      <a href="/profile" class="profile-link">
-        👤 {{ session.user_name }}
-      </a>
+  <!-- LEFT -->
+  <div class="logo">Digi-Health</div>
 
-      <a href="/logout" class="logout-btn">
-        Logout
-      </a>
-    </div>
-  </header>
+  <!-- RIGHT -->
+  <div class="top-right">
+    <span class="email-icon" onclick="sendDemoEmail()" title="Send Demo Email">📧</span>
+
+    <a href="/profile" class="user-name">
+      👤 {{ session['user_name'] }}
+    </a>
+
+    <a href="/logout" class="logout-btn">Logout</a>
+  </div>
+
+</header>
 
   <!-- DASHBOARD -->
   <div class="dashboard-container">
@@ -76,9 +79,15 @@
         <h3>My Appointments</h3>
         <p>View & manage bookings</p>
     </div>
-
 </a>
 
+<script>
+function sendDemoEmail(){
+    fetch("/send-demo-email")
+    .then(res => res.json())
+    .then(data => alert(data.message));
+}
+</script>
 
     </div>
   </div>

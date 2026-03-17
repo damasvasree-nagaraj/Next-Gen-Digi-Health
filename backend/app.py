@@ -7,9 +7,16 @@ from bson import ObjectId
 from flask import send_file
 from io import BytesIO
 from reportlab.pdfgen import canvas
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+from apscheduler.schedulers.background import BackgroundScheduler
 import random
 import certifi
 import requests
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 from functools import wraps
 
@@ -23,12 +30,12 @@ def doctor_required(f):
 
 # ================= APP SETUP =================
 app = Flask(__name__)
-app.secret_key = "nextgen_digi_health_secret_key"
+app.secret_key = os.getenv("SECRET_KEY", "supersecretkey")
 bcrypt = Bcrypt(app)
 
 # ================= DATABASE =================
-MONGO_USERNAME="nextgen_admin"
-MONGO_PASSWORD=quote_plus("nextgen123")
+MONGO_USERNAME= os.getenv("MONGO_USERNAME")
+MONGO_PASSWORD=quote_plus(os.getenv("MONGO_PASSWORD"))
 
 MONGO_URI = (
     f"mongodb+srv://{MONGO_USERNAME}:{MONGO_PASSWORD}"
@@ -44,12 +51,7 @@ orders = db["orders"]
 prescriptions = db["prescriptions"]
 medical_records = db["medical_records"]
 appointments = db["appointments"]
-
-# ================= AI IMPORTS =================
-from ai_chatbot.ollama_client import call_ollama
-from ai_chatbot.rag_engine import retrieve_context
-from ai_chatbot.prompts import SYSTEM_PROMPT, build_user_prompt
-
+insurance_claims = db["insurance_claims"]
 
 # =========================================================
 # HOME
@@ -70,6 +72,43 @@ def select_role():
 @app.route("/register-page")
 def register_page():
     return render_template("register.html")
+
+@app.route("/register", methods=["POST"])
+def register():
+
+    data = request.get_json()
+
+    name = data.get("name")
+    email = data.get("email")
+    password = data.get("password")
+    role = data.get("role", "patient")
+
+    # Check if user already exists
+    if users.find_one({"email": email}):
+        return jsonify({"error": "User already exists"})
+
+    # Hash password
+    hashed_password = bcrypt.generate_password_hash(password).decode("utf-8")
+
+    # Save user
+    users.insert_one({
+        "name": name,
+        "email": email,
+        "password": hashed_password,
+        "role": role,
+        "created_at": datetime.now()
+    })
+
+    # ✅ SEND EMAIL HERE
+    send_confirmation_email(
+        email,
+        name,
+        "Digi Health Team",
+        "Welcome",
+        "Now"
+    )
+
+    return jsonify({"message": "Registration successful"})
 
 @app.route("/login/patient")
 def patient_login_page():
@@ -265,13 +304,102 @@ def download_prescription(id):
         download_name="prescription.pdf",
         mimetype="application/pdf"
     )
+
+def detect_fraud(claim):
+
+    try:
+        amount = int(claim.get("amount", 0))
+    except:
+        amount = 0
+
+    # Rule 1: High amount
+    if amount > 20000:
+        return "High Risk"
+
+    # Rule 2: Too many claims
+    count = insurance_claims.count_documents({
+        "patient_id": claim["patient_id"]
+    })
+
+    if count > 5:
+        return "Frequent Claimer"
+
+    return "Safe"
+
+@app.route("/submit-claim", methods=["POST"])
+def submit_claim():
+
+    if session.get("user_role") != "patient":
+        return redirect("/select-role")
+
+    data = request.get_json()
+
+    # ✅ SAFE amount conversion
+    try:
+        amount = int(data.get("amount", 0))
+    except:
+        amount = 0
+
+    # Step 1: Create base claim
+    claim_data = {
+        "patient_id": session.get("user_id"),
+        "patient_name": session.get("user_name"),
+        "doctor_id": data.get("doctor_id"),
+        "doctor_name": data.get("doctor_name"),
+        "treatment": data.get("treatment"),
+        "amount": amount,
+        "status": "Pending",
+        "created_at": datetime.now()
+    }
+
+    # Step 2: Fraud detection
+    fraud_status = detect_fraud(claim_data)
+    claim_data["fraud_flag"] = fraud_status
+
+    # Step 3: Smart status decision
+    if amount < 5000 and fraud_status == "Safe":
+        claim_data["status"] = "Approved"
+    elif fraud_status == "High Risk":
+        claim_data["status"] = "Under Review"
+    else:
+        claim_data["status"] = "Pending"
+
+    # Step 4: Save
+    insurance_claims.insert_one(claim_data)
+
+    return jsonify({"message": "Claim submitted successfully"})
+
+
+# ================= AI IMPORTS =================
+from ai_chatbot.ollama_client import call_ollama
+from ai_chatbot.rag_engine import retrieve_context
+from ai_chatbot.prompts import SYSTEM_PROMPT, build_user_prompt
+from deep_translator import GoogleTranslator
+
+def translate_to_english(text):
+    try:
+        translated = GoogleTranslator(source='auto', target='en').translate(text)
+        return translated
+    except Exception as e:
+        print("Translation to English failed:", e)
+        return text
+
+
+def translate_from_english(text, lang):
+    try:
+        lang = lang.split("-")[0]  # ta-IN -> ta
+        translated = GoogleTranslator(source='en', target=lang).translate(text)
+        return translated
+    except Exception as e:
+        print("Translation from English failed:", e)
+        return text
+
 # ================= CHATBOT (FINAL CLEAN VERSION) =================
 @app.route("/chatbot")
 def chatbot():
     if session.get("user_role") != "patient":
         return redirect("/select-role")
     return render_template("chatbot.html")
-
 
 @app.route("/api/chat", methods=["POST"])
 def chat_api():
@@ -280,23 +408,38 @@ def chat_api():
         return jsonify({"reply": "Login required"}), 401
 
     data = request.get_json()
+
     user_message = data.get("message")
+    user_lang = data.get("language", "en-US")
 
     if not user_message:
         return jsonify({"reply": "Please enter a message."})
 
     try:
-        context = retrieve_context(user_message)
-        prompt = SYSTEM_PROMPT + build_user_prompt(context, user_message)
-        reply = call_ollama(prompt)
 
-        return jsonify({"reply": reply})
+        # Convert user language to English
+        english_message = translate_to_english(user_message)
+
+        context = retrieve_context(english_message)
+
+        prompt = SYSTEM_PROMPT + build_user_prompt(context, english_message)
+
+        ai_reply = call_ollama(prompt)
+
+        # Translate AI reply back to user language
+        final_reply = translate_from_english(ai_reply, user_lang)
+
+        return jsonify({"reply": final_reply})
 
     except Exception as e:
+
         print("Chat Error:", e)
+
         return jsonify({"reply": "AI temporarily unavailable."})
 
-
+@app.route('/video_call/<room>')
+def video_call(room):
+    return render_template("video_call.html", room=room)
 # =========================================================
 # DOCTOR MODULE (SAFE PLACEHOLDER)
 # =========================================================
@@ -312,9 +455,9 @@ def doctor_dashboard():
     today = datetime.now().strftime("%Y-%m-%d")
 
     today_appointments = list(appointments.find({
-        "doctor_id": doctor_id,
-        "date": today
-    }).sort("time", 1))
+    "doctor_id": doctor_id,
+    "status": "Confirmed"
+    }).sort("date", 1))
 
     available_slots = db.doctor_availability.count_documents({
         "doctor_id": doctor_id,
@@ -339,6 +482,22 @@ def doctor_dashboard():
         completed=completed,
         cancelled=cancelled,
         utilization=utilization
+    )
+
+@app.route("/doctor/video-appointments")
+@doctor_required
+def doctor_video_appointments():
+
+    doctor_id = session.get("user_id")
+
+    video_appointments = list(appointments.find({
+        "doctor_id": doctor_id,
+        "appointment_type": "video"
+    }).sort("date", 1))
+
+    return render_template(
+        "doctor_video_appointments.html",
+        appointments=video_appointments
     )
 
 
@@ -386,6 +545,20 @@ def generate_next_slot(doctor_id):
         return next_date, start_time
 
     return None, None
+
+@app.route('/doctor/appointments')
+def doctor_appointments():
+
+    doctor_id = session.get("user_id")
+
+    doctor_appointments = db.appointments.find({
+        "doctor_id": doctor_id
+    })
+
+    return render_template(
+        "doctor_dashboard.html",
+        appointments=doctor_appointments
+    )
 
 
 # ===============================
@@ -453,7 +626,7 @@ def doctor_claims():
 
     doctor_id = session.get("user_id")
 
-    claims = list(db.insurance_claims.find({
+    claims = list(insurance_claims.find({ 
         "doctor_id": doctor_id
     }))
 
@@ -461,6 +634,34 @@ def doctor_claims():
         "doctor_claims.html",
         claims=claims
     )
+
+@app.route("/doctor/approve-claim/<claim_id>", methods=["POST"])
+def approve_claim(claim_id):
+
+    if session.get("user_role") != "doctor":
+        return redirect("/login/doctor")
+
+    insurance_claims.update_one(
+        {"_id": ObjectId(claim_id)},
+        {"$set": {"status": "Approved"}}
+    )
+
+    return redirect("/doctor/claims")
+
+
+@app.route("/doctor/reject-claim/<claim_id>", methods=["POST"])
+def reject_claim(claim_id):
+
+    if session.get("user_role") != "doctor":
+        return redirect("/login/doctor")
+
+    insurance_claims.update_one(
+        {"_id": ObjectId(claim_id)},
+        {"$set": {"status": "Rejected"}}
+    )
+
+    return redirect("/doctor/claims")
+
 # =========================================================
 # HOSPITAL MODULE (SAFE PLACEHOLDER)
 # =========================================================
@@ -531,6 +732,17 @@ def my_appointments():
         "patient_id": patient_id
     }).sort("date", 1))
 
+    now = datetime.now() 
+
+    for appt in patient_appointments:
+        appt_time = datetime.strptime(
+            appt["date"] + " " + appt["time"],
+            "%Y-%m-%d %H:%M"
+        )
+
+        if now > appt_time:
+            appt["status"] = "Completed"
+    
     return render_template(
         "patient_appointments.html",
         appointments=patient_appointments
@@ -617,7 +829,6 @@ def book_appointment():
         date = request.form.get("appointment_date")
         time = request.form.get("appointment_time")
 
-        # 🔴 Check if slot already booked
         existing_appointment = db.appointments.find_one({
             "doctor_id": doctor_id,
             "date": date,
@@ -633,18 +844,20 @@ def book_appointment():
             )
 
         patient = db.users.find_one({
-        "_id": ObjectId(session.get("user_id"))
-    })
+            "_id": ObjectId(session.get("user_id"))
+        })
 
         doctor = db.users.find_one({"_id": ObjectId(doctor_id)})
 
-        # 🔵 Generate daily token number per doctor
         count = db.appointments.count_documents({
             "doctor_id": doctor_id,
             "date": date
         })
 
         token_number = count + 1
+
+        import uuid
+        video_room = "digihealth_" + str(uuid.uuid4())[:8]
 
         appointment_data = {
             "patient_id": session.get("user_id"),
@@ -654,12 +867,34 @@ def book_appointment():
             "date": date,
             "time": time,
             "token_number": token_number,
+            "appointment_type": "video",
+            "video_room": video_room,
             "status": "Confirmed",
+
+            "confirmation_sent": False,
+            "reminder_1_sent": False,
+            "reminder_2_sent": False,
+            "completion_email_sent": False,
+
             "created_at": datetime.now()
         }
 
-        db.appointments.insert_one(appointment_data)
+        result = db.appointments.insert_one(appointment_data)
 
+        send_confirmation_email(
+            patient["email"],
+            patient["name"],
+            doctor["name"],
+            date,
+            time
+        )
+
+        appointments.update_one(
+            {"_id": result.inserted_id},
+            {"$set": {"confirmation_sent": True}}
+        )
+
+        # ✅ CORRECT PLACE
         return render_template(
             "appointment_success.html",
             doctor=doctor["name"],
@@ -668,6 +903,7 @@ def book_appointment():
             token=token_number
         )
 
+    # ✅ GET REQUEST
     return render_template("book_appointment.html", doctors=doctors)
 
 @app.route("/hospital/cancel-appointment/<appointment_id>", methods=["POST"])
@@ -783,9 +1019,6 @@ def hospital_view_patient(patient_id):
         patient=patient,
         prescriptions=patient_prescriptions
     )
-# ===============================
-# HOSPITAL AI - PATIENT LEVEL
-# ===============================
 # ===============================
 # HOSPITAL AI - PATIENT LEVEL
 # ===============================
@@ -924,9 +1157,217 @@ def manage_availability():
         availability=availability
     )
 
+@app.route("/send-demo-email")
+def send_demo_email():
+
+    if session.get("user_role") != "patient":
+        return jsonify({"message": "Login required"})
+
+    patient = users.find_one({
+        "_id": ObjectId(session.get("user_id"))
+    })
+
+    send_appointment_email(
+        patient["email"],
+        patient["name"],
+        "Dr Demo",
+        "Tomorrow",
+        "10:00 AM"
+    )
+
+    return jsonify({"message": "Demo email sent!"})
+    
+SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")
+SENDER_EMAIL = os.getenv("SENDER_EMAIL")
+
+def send_appointment_email(patient_email, patient_name, doctor_name, date, time):
+
+    message = Mail(
+        from_email=SENDER_EMAIL,
+        to_emails=patient_email,
+        subject="Digi Health Appointment Reminder",
+        plain_text_content=f"""
+Hello {patient_name},
+
+Reminder: You have a video consultation with Dr. {doctor_name}.
+
+Date: {date}
+Time: {time}
+
+Please join through the Digi Health app on time.
+
+Thank you,
+Digi Health Team
+"""
+    )
+
+    try:
+        sg = SendGridAPIClient(SENDGRID_API_KEY)
+        sg.send(message)
+        print("Email sent successfully")
+
+    except Exception as e:
+        print("Email error:", e)
+
+def send_confirmation_email(patient_email, patient_name, doctor_name, date, time):
+
+    message = Mail(
+        from_email=SENDER_EMAIL,
+        to_emails=patient_email,
+        subject="Appointment Confirmed ✅",
+        html_content=f"""
+        <div style="font-family: Arial; padding:20px;">
+            <h2 style="color:#0b4f6c;">Appointment Confirmed</h2>
+
+            <p>Hello <b>{patient_name}</b>,</p>
+
+            <p>Your appointment with <b>Dr. {doctor_name}</b> has been successfully booked.</p>
+
+            <p>
+                <b>Date:</b> {date}<br>
+                <b>Time:</b> {time}
+            </p>
+
+            <p>We will remind you before your appointment.</p>
+
+            <p style="margin-top:20px;">Digi Health Team</p>
+        </div>
+        """
+    )
+
+    try:
+        sg = SendGridAPIClient(SENDGRID_API_KEY)
+        sg.send(message)
+        print("Confirmation email sent")
+
+    except Exception as e:
+        print("Email error:", e)
+
+def send_reminder_emails():
+
+    now = datetime.now()
+
+    upcoming_appointments = appointments.find({
+        "status": "Confirmed"
+    })
+
+    for appt in upcoming_appointments:
+
+        try:
+            appointment_time = datetime.strptime(
+                appt["date"] + " " + appt["time"],
+                "%Y-%m-%d %H:%M"
+            )
+        except:
+            appointment_time = datetime.strptime(
+                appt["date"] + " " + appt["time"],
+                "%Y-%m-%d %I:%M %p"
+            )
+
+        patient = users.find_one({"_id": ObjectId(appt["patient_id"])})
+
+        if not patient:
+            continue
+
+        time_diff = (appointment_time - now).total_seconds()
+        print("TIME DIFF:", time_diff)
+
+        # ⏰ 1 DAY BEFORE
+        if 86000<= time_diff <= 87000 and not appt.get("reminder_1_sent", False):
+
+            send_appointment_email(
+                patient["email"],
+                patient["name"],
+                appt["doctor_name"],
+                appt["date"],
+                appt["time"]
+            )
+
+            appointments.update_one(
+                {"_id": appt["_id"]},
+                {"$set": {"reminder_1_sent": True}}
+            )
+
+        # ⏰ 10 MIN BEFORE
+        if 0 <= time_diff <= 600 and not appt.get("reminder_2_sent", False):
+
+            send_appointment_email(
+                patient["email"],
+                patient["name"],
+                appt["doctor_name"],
+                appt["date"],
+                appt["time"]
+            )
+
+            appointments.update_one(
+                {"_id": appt["_id"]},
+                {"$set": {"reminder_2_sent": True}}
+            )
+
+        # ✅ COMPLETED
+        if now > appointment_time and appt.get("status") != "Completed":
+
+            appointments.update_one(
+                {"_id": appt["_id"]},
+                {"$set": {"status": "Completed"}}
+            )
+
+            if not appt.get("completion_email_sent", False):
+
+                send_completion_email(
+                    patient["email"],
+                    patient["name"],
+                    appt["doctor_name"],
+                    appt["date"],
+                    appt["time"]
+                )
+
+                appointments.update_one(
+                    {"_id": appt["_id"]},
+                    {"$set": {"completion_email_sent": True}}
+                )
+                
+def send_completion_email(patient_email, patient_name, doctor_name, date, time):
+
+    message = Mail(
+        from_email=SENDER_EMAIL,
+        to_emails=patient_email,
+        subject="Digi Health - Appointment Completed",
+        html_content=f"""
+        <div style="font-family: Arial; padding:20px;">
+            <h2 style="color:#0b4f6c;">Appointment Completed ✅</h2>
+
+            <p>Hello <b>{patient_name}</b>,</p>
+
+            <p>Your consultation with <b>Dr. {doctor_name}</b> has been completed.</p>
+
+            <p>
+                <b>Date:</b> {date}<br>
+                <b>Time:</b> {time}
+            </p>
+
+            <p>We hope you had a great experience.</p>
+
+            <p style="margin-top:20px;">Stay healthy ❤️<br>Digi Health Team</p>
+        </div>
+        """
+    )
+
+    try:
+        sg = SendGridAPIClient(SENDGRID_API_KEY)
+        sg.send(message)
+        print("Completion email sent")
+
+    except Exception as e:
+        print("Completion email error:", e)
+
+            
+scheduler = BackgroundScheduler()
+scheduler.add_job(send_reminder_emails, 'interval', minutes=1)
+scheduler.start()
 
 # =========================================================
 # RUN
 # =========================================================
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)
